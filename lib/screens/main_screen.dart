@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http_session/models/university_model.dart';
 import 'package:http_session/server/api.dart';
+import 'package:http_session/utils/utils.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -106,6 +107,14 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _searchForUniversitiesByCountry() async {
+    if (!await Utils.isConnected()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('check your internet connection'),
+        ),
+      );
+      return;
+    }
     final validated = formKey.currentState?.validate() ?? false;
     if (!validated) {
       ScaffoldMessenger.of(context).showSnackBar(
